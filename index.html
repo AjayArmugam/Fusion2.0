@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scholarship Finder Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      padding: 40px;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Scholarship Finder</h2>
+
+<form id="scholarshipForm">
+  <label>Name: <input type="text" name="name" required></label>
+  <label>Date of Birth: <input type="date" name="dob" required></label>
+  <label>Place: <input type="text" name="place" required></label>
+  <label>Gender:
+    <select name="gender" required>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+  </label>
+  <label>Education Level: <input type="text" name="education" required></label>
+  <label>Disability Status:
+    <select name="disability">
+      <option value="No">No</option>
+      <option value="Yes">Yes</option>
+    </select>
+  </label>
+  <label>Marks (%): <input type="number" name="marks" min="0" max="100" required></label>
+  <label>Ex-Service Family? 
+    <select name="exservice">
+      <option value="No">No</option>
+      <option value="Yes">Yes</option>
+    </select>
+  </label>
+
+  <button type="submit">Find Scholarships</button>
+</form>
+
+<div class="result" id="result"></div>
+
+<script>
+document.getElementById('scholarshipForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  const response = await fetch('/api/scholarship', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  });
+
+  const result = await response.json();
+  document.getElementById('result').innerText = result.reply;
+});
+</script>
+
+</body>
+</html>
